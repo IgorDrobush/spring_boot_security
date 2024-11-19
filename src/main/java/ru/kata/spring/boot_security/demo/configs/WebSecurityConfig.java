@@ -8,6 +8,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @Configuration
@@ -23,7 +25,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/", "/index").permitAll()
+                .antMatchers("/", "/login").permitAll()
+                .antMatchers("/user").hasRole("USER")
+                .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().successHandler(successUserHandler)
@@ -31,19 +35,30 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .permitAll();
+
+//                // Доступ ко всем запросам без авторизации
+//                .authorizeRequests()
+//                .anyRequest().permitAll()
+//                .and()
+//                .csrf().disable();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return NoOpPasswordEncoder.getInstance();
     }
 
     // аутентификация inMemory
-    @Bean
-    @Override
-    public UserDetailsService userDetailsService() {
-        UserDetails user =
-                User.withDefaultPasswordEncoder()
-                        .username("user")
-                        .password("user")
-                        .roles("USER")
-                        .build();
-
-        return new InMemoryUserDetailsManager(user);
-    }
+//    @Bean
+//    @Override
+//    public UserDetailsService userDetailsService() {
+//        UserDetails user =
+//                User.withDefaultPasswordEncoder()
+//                        .username("user")
+//                        .password("user")
+//                        .roles("USER", "ADMIN")
+//                        .build();
+//
+//        return new InMemoryUserDetailsManager(user);
+//    }
 }

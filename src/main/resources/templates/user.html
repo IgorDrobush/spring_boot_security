@@ -5,7 +5,15 @@
 </head>
 <body>
 <h1>User, welcome spring boot security page!</h1>
-
-
+<p>ID: <span th:text="${user.id}"></span></p>
+<p>Имя: <span th:text="${user.username}"></span></p>
+<p>Пароль: <span th:text="${user.password}"></span></p>
+<p>Роли:</p>
+<ul>
+    <li th:each="role : ${user.roles}" th:text="${role.authority}"></li>
+</ul>
+<form th:action="@{/logout}" method="get">
+    <button type="submit">Logout</button>
+</form>
 </body>
 </html>

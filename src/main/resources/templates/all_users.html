@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Список пользователей</title>
+</head>
+<body>
+<h2>Пользователи</h2>
+<div>
+    <th:block th:each="user : ${users}">
+        <div style="display: flex; align-items: center; margin-bottom: 5px;">
+            <h1 style="margin: 0; font-size: 18px;" th:text="${user}"></h1>
+            <div style="margin-left: 10px;">
+                <a th:href="@{/admin/update_user_form(id=${user.id})}" style="margin-right: 10px;">Редактировать</a>
+                <a th:href="@{/admin/delete(id=${user.id})}" style="margin-right: 10px;" onclick="return confirm('Вы уверены, что хотите удалить этого пользователя?');">Удалить</a>
+            </div>
+        </div>
+    </th:block>
+    <a th:href="@{/admin/save_user_form}" style="display: block; margin-top: 10px; font-size: 16px;">Добавить пользователя</a>
+</div>
+<form th:action="@{/logout}" method="get">
+    <button type="submit">Logout</button>
+</form>
+</body>
+</html>
