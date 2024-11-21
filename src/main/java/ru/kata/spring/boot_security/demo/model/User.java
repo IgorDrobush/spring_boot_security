@@ -19,7 +19,7 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(unique = true)
     @NotEmpty(message = "Поле не должно быть пустым")
     @Pattern(regexp = "^[A-Za-z]+$", message = "Имя должно содержать только буквы латинского алфавита")
     private String username;
